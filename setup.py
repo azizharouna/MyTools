@@ -7,7 +7,8 @@ setup(
     install_requires=[
         'numpy',
         'pandas',
-        'scikit-learn'
+        'scikit-learn',
+        'statsmodels'
     ],
     author='Abdoul Aziz Moussa',
     author_email='abdoulenergy@gmail.com',

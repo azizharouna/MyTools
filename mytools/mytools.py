@@ -2,13 +2,19 @@ import numpy as np
 import pandas as pd
 from sklearn.covariance import EllipticEnvelope
 from scipy.spatial.distance import mahalanobis
+from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 
 
 
 class MyTools:
-    def __init__(self, data):
+    def __init__(self, data, features=None):
         self.data = data
+        if features is None:
+            # If no features are provided, use all numeric columns as features
+            self.features = data.select_dtypes(include=['number'])
+        else:
+            self.features = features
 
     def robust_mahalanobis_outlier_detection(self, contamination=0.1, return_outliers=False):
         """
@@ -22,7 +28,7 @@ class MyTools:
             pd.DataFrame: Cleaned DataFrame (default) or DataFrame of outliers.
         """
         # Select only the numeric columns for Mahalanobis distance calculation
-        numeric_data = self.data.select_dtypes(include=['number'])
+        numeric_data = self.features.select_dtypes(include=['number'])
 
         
         # Fit the robust covariance estimator
@@ -76,32 +82,31 @@ class MyTools:
             raise ValueError("Invalid strategy. Choose from 'drop', 'fill_median', 'fill_mean', or 'interpolate'.")
 
         return cleaned_data
+        
+    
 
-# Example usage:
-if __name__ == "__main__":
-    # Sample DataFrame
-    data = pd.DataFrame({
-        'Feature1': [1.0, 2.0, 3.0, np.nan, 5.0, 100.0],
-        'Feature2': [10.0, 20.0, np.nan, 40.0, 50.0, 1000.0]
-    })
+    
+    def check_collinearity(self, threshold=5.0):
+        """
+        Check for collinearity among features using Variance Inflation Factor (VIF).
 
-    # Create an instance of MyTools
-    my_tools = MyTools(data)
+        Args:
+            threshold (float): The threshold value for VIF. Features with VIF greater than this value are considered collinear.
 
-    # Handle null values using different strategies
-    cleaned_data_drop = my_tools.handle_null_values(strategy='drop')
-    cleaned_data_fill_median = my_tools.handle_null_values(strategy='fill_median')
-    cleaned_data_fill_mean = my_tools.handle_null_values(strategy='fill_mean')
-    cleaned_data_interpolate = my_tools.handle_null_values(strategy='interpolate')
+        Returns:
+            pd.DataFrame: DataFrame showing VIF for each feature.
+        """
+        # Filter the features DataFrame to include only numeric columns
+        numeric_features = self.features.select_dtypes(include=['number'])
 
-    print("Cleaned Data (Drop Nulls):")
-    print(cleaned_data_drop)
+        # Calculate VIF for numeric features
+        vif_data = pd.DataFrame()
+        vif_data["Feature"] = numeric_features.columns
+        vif_data["VIF"] = [variance_inflation_factor(numeric_features.values, i) for i in range(numeric_features.shape[1])]
 
-    print("\nCleaned Data (Fill with Median):")
-    print(cleaned_data_fill_median)
+        # Filter features with VIF above the threshold
+        collinear_features = vif_data[vif_data["VIF"] > threshold]
 
-    print("\nCleaned Data (Fill with Mean):")
-    print(cleaned_data_fill_mean)
+        return vif_data, collinear_features
 
-    print("\nCleaned Data (Interpolate):")
-    print(cleaned_data_interpolate)
+
