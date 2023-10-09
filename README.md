@@ -18,7 +18,22 @@ You can use MyTools by simply including it in your Python project or importing i
 
 ```python
 from mytools import MyTools
+``` 
 
 ## Usage
 ### Outlier Detection
-    MyTools provides a method for outlier detection using Scikit-Learn's Robust Covariance Estimation and Mahalanobis distance. Here's how to use it:
+MyTools provides a method for outlier detection using Scikit-Learn's Robust Covariance Estimation and Mahalanobis distance. Here's how to use it:
+
+```python
+# Create an instance of MyTools with your data
+my_tools = MyTools(your_dataframe)
+
+# Detect outliers and return cleaned data (default)
+cleaned_data = my_tools.robust_mahalanobis_outlier_detection()
+
+# Detect outliers and return only outliers
+outliers = my_tools.robust_mahalanobis_outlier_detection(return_outliers=True)
+
+``` 
+
+    
