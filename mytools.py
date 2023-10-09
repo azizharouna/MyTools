@@ -21,15 +21,25 @@ class MyTools:
         Returns:
             pd.DataFrame: Cleaned DataFrame (default) or DataFrame of outliers.
         """
+        # Select only the numeric columns for Mahalanobis distance calculation
+        numeric_data = self.data.select_dtypes(include=['number'])
+
+        
         # Fit the robust covariance estimator
         robust_cov = EllipticEnvelope(contamination=contamination)
-        robust_cov.fit(self.data)
+        robust_cov.fit(numeric_data)
 
-        # Compute the Mahalanobis distances
-        mahal_dist = robust_cov.mahalanobis(self.data)
+         # Compute the Mahalanobis distances
+        mahal_dist = robust_cov.mahalanobis(numeric_data)
 
+        
         # Set a threshold for outlier detection
         threshold = np.percentile(mahal_dist, 100 * (1 - contamination))
+
+         # Fit the robust covariance estimator
+        robust_cov = EllipticEnvelope(contamination=contamination)
+        robust_cov.fit(numeric_data)
+        
 
         if return_outliers:
             # Return only the outliers
