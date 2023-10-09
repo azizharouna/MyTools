@@ -39,10 +39,10 @@ outliers = my_tools.robust_mahalanobis_outlier_detection(return_outliers=True)
 ### Handling Null Values
 You can handle null values in your dataset using various strategies with the handle_null_values method. Supported strategies include:
 
--'drop': Drops rows with any null values.
--'fill_median': Fills null values with column medians.
--'fill_mean': Fills null values with column means.
--'interpolate': Interpolates missing values using linear interpolation.
+* 'drop': Drops rows with any null values.
+* 'fill_median': Fills null values with column medians.
+* 'fill_mean': Fills null values with column means.
+* 'interpolate': Interpolates missing values using linear interpolation.
 Here's how to use it:
 ```python   
 # Handle null values using different strategies
@@ -51,5 +51,11 @@ cleaned_data_fill_median = my_tools.handle_null_values(strategy='fill_median')
 cleaned_data_fill_mean = my_tools.handle_null_values(strategy='fill_mean')
 cleaned_data_interpolate = my_tools.handle_null_values(strategy='interpolate')
 ```
+### Contributing
+Contributions are welcome! If you have any improvements or new features to add, please submit a pull request.
 
+
+### License
+This project is licensed under the MIT License - see the LICENSE file for details.
+Check my other projects here : 
     
