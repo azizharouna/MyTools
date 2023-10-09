@@ -19,7 +19,7 @@ You can use MyTools by simply including it in your Python project or importing i
 ```python
 !pip install git+https://github.com/azizharouna/MyTools.git
 
-from mytools import MyTools
+from mytools.mytools import MyTools
 ``` 
 
 ## Usage
