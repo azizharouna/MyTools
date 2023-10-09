@@ -17,6 +17,8 @@ MyTools is a Python class designed to simplify common data analysis tasks. It in
 You can use MyTools by simply including it in your Python project or importing it into your script.
 
 ```python
+!pip install git+https://github.com/azizharouna/MyTools.git
+
 from mytools import MyTools
 ``` 
 
